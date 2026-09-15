@@ -1,0 +1,15 @@
+/* Sidebar */
+    #sidebar {
+      width: 250px;
+      transition: all 0.3s;
+    }
+
+    #sidebar.hide {
+      margin-left: -250px;
+    }
+
+    /* Content */
+    #content {
+      transition: all 0.3s;
+      width: 100%;
+    }
