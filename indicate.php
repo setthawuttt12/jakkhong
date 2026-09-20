@@ -15,6 +15,7 @@
     $email=$read['email'];
     $password=$read['password'];
     $id_member=$read['id_member'];
+
 ?>
 
 <!DOCTYPE html>
@@ -37,13 +38,33 @@
             <div class="col-12" style="display: flex; justify-content: center;">
                 <div class="col-8">
                     <div class="card shadow-lg" style="border: none;">
-                        <div class="card-header bg-secondary"><h1 class="text-center text-white">จัดการหัวข้อการประเมิน</h1></div>
+                        <div class="card-header bg-secondary"><h1 class="text-center text-white">จัดการตัวชี้วัด</h1></div>
                         <div class="card-body">
-                            <form action="saveTopic.php" class="was-validated" method="post">
+                            <form action="saveIndicate.php" class="was-validated" method="post">
                                 <div class="row" style="justify-content: center;">
-                                    <div class="col-12 mb-3">
-                                        <input type="text" placeholder="ชื่อหัวข้อการประเมิน" name="name_topic" id="name_topic" class="form-control" required>
-                                        <div class="invalid-feedback">กรุณากรอกชื่อหัวข้อการประเมิน</div>
+                                    <div class="col-6 mb-3">
+                                        <select class="form-select" name="id_topic" id="">
+                                            <?php 
+                                            
+                                                include "connect_db.php";
+                                                $sql = "select * from tb_topic order by id_topic desc";
+                                                $result = $conn->query($sql);
+                                                
+                                                foreach($result as $row){
+                                                
+                                            
+                                            ?>
+                                            
+                                                <option value="<?php echo $row['id_topic']; ?>"><?php echo $row['name_topic']; ?></option>
+                                            
+                                            
+                                            <?php } ?>
+                                        </select>
+                                        <div class="invalid-feedback">กรุณาเลือกหัวข้อการประเมิน</div>
+                                    </div>
+                                    <div class="col-6">
+                                        <input type="text" placeholder="ชื่อตัวชี้วัด" name="name_indicate" id="name_indicate" class="form-control" required>
+                                        <div class="invalid-feedback">กรุณากรอกชื่อตัวชี้วัด</div>
                                     </div>
                                     <div class="col-12 mb-3">
                                         <center>
@@ -66,33 +87,35 @@
                                             <tr>
                                                 <th class="text-center">ลำดับ</th>
                                                 <th class="text-center">ชื่อหัวข้อการประเมิน</th>
+                                                <th class="text-center">ชื่อตัวชี้วัด</th>
                                                 <th class="text-center">จัดการ</th>
                                             </tr>
                                         </thead>
                                         <?php 
                                         
                                             include "connect_db.php";
-                                            $sql = "select * from tb_topic order by id_topic desc";
+                                            $sql = "select * from tb_topic,tb_indicate where tb_topic.id_topic = tb_indicate.id_topic order by id_indicate desc";
                                             $result = $conn->query($sql);
                                             $n = 0;
-                                            $total_topic = $result->num_rows;
+                                            $total_indicate = $result->num_rows;
                                         ?>
                                         <tbody>
-                                            <?php if($total_topic > 0){ ?>
+                                            <?php if($total_indicate > 0){ ?>
                                                 <?php foreach($result as $row){
                                                     $n++;
                                                 ?>
                                                 <tr>
                                                     <td class="text-center"><?php echo $n; ?></td>
                                                     <td class="text-center"><?php echo $row['name_topic']; ?></td>
+                                                    <td class="text-center"><?php echo $row['name_indicate']; ?></td>
                                                     <td class="text-center">
-                                                        <a href="deleteTopic.php?id_topic=<?php echo $row['id_topic']; ?>" class="text-center btn btn-danger text-white ms-2 mb-2" onclick="alert('ต้องการลบข้อมูลชุดนี้ใช่หรือไม่')">ลบ</a>
+                                                        <a href="deleteIndicate.php?id_indicate=<?php echo $row['id_indicate']; ?>" class="text-center btn btn-danger text-white ms-2 mb-2" onclick="alert('ต้องการลบข้อมูลชุดนี้ใช่หรือไม่')">ลบ</a>
                                                     </td>
                                                 </tr>
                                                 <?php } ?>
                                             <?php }else{ ?>
                                                 <tr>
-                                                    <td class="text-center text-danger" colspan="3">ไม่มีข้อมูล</td>
+                                                    <td class="text-center text-danger" colspan="4">ไม่มีข้อมูล</td>
                                                 </tr>
                                             <?php } ?>
                                         </tbody>

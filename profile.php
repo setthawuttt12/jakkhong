@@ -38,7 +38,7 @@
             <div class="col-12" style="display: flex; justify-content: center;">
                 <div class="col-5">
                     <div class="card shadow-lg" style="border: none;">
-                        <div class="card-header bg-primary"><h1 class="text-center text-white">แก้ไขข้อมูลส่วนตัว</h1></div>
+                        <div class="card-header bg-secondary"><h1 class="text-center text-white">แก้ไขข้อมูลส่วนตัว</h1></div>
                         <div class="card-body">
                             <form action="update.php" class="was-validated" method="post">
                                 <div class="row" style="justify-content: center;">
