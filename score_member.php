@@ -47,36 +47,36 @@
                                             <tr>
                                                 <th class="text-center">ลำดับ</th>
                                                 <th class="text-center">ชื่อผู้ประเมิน</th>
+                                                <th class="text-center">อีเมล</th>
                                                 <th class="text-center">คะแนนที่ได้</th>
+                                                <th class="text-center">สถานะ</th>
                                             </tr>
                                         </thead>
                                         <?php 
                                         
                                             include "connect_db.php";
-                                            $sql = "SELECT SUM(d.score_member) AS total_score,m.fname,m.lname,m.id_member  FROM tb_member m , tb_detail d , tb_eva e where m.id_member = e.id_member and e.id_eva = d.id_eva";
+                                            $sql = "SELECT * FROM tb_member m , tb_eva e WHERE m.id_member = e.id_member";
                                             $result = $conn->query($sql);
                                             $n = 0;
-                                            $sql2 = "SELECT COUNT(*) AS total_detail FROM tb_detail";
-                                            $result2 = $conn->query($sql2);
-                                            $row2 = mysqli_fetch_assoc($result2);
-                                            $total_detail = $row2['total_detail'];
                                             
-                                            if($total_detail > 0){ 
+                                            if($result->num_rows > 0){ 
                                             foreach($result as $row){
                                                 $n++;
-                                                $total_score = $row['total_score'];
+                                                $total_score = $row['total'];
                                         ?>
                                         <tbody>
                                             <tr>
                                                 <td class="text-center"><?php echo $n; ?></td>
                                                 <td class="text-center"><?php echo $row['fname'].' '.$row['lname']; ?></td>
+                                                <td class="text-center"><?php echo $row['email']; ?></td>
                                                 <td class="text-center"><?php echo $total_score; ?></td>
+                                                <td class="text-center"><?php echo $row['status_eva'] === 'y' ? 'ประเมินแล้ว' : 'ยังไม่ประเมิน'; ?></td>
                                             </tr>
                                             <?php } ?>
                                         </tbody>
                                         <?php }else{ ?>
                                         <tr>
-                                            <td class="text-center text-danger" colspan="3">ไม่มีข้อมูล</td>
+                                            <td class="text-center text-danger" colspan="5">ไม่มีข้อมูล</td>
                                         </tr>
                                         <?php } ?>
                                     </table>

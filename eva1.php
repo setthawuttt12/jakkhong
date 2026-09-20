@@ -53,32 +53,18 @@
                                         <?php 
                                         
                                             include "connect_db.php";
-                                            $sql = "SELECT SUM(d.score_member) AS total_score,m.fname,m.lname,m.id_member FROM tb_member m , tb_detail d , tb_eva e where m.id_member = $id_member and m.id_member = e.id_member and e.id_eva = d.id_eva";
+                                            $sql = "SELECT * FROM tb_member m , tb_detail d , tb_eva e where m.id_member = $id_member and m.id_member = e.id_member";
                                             $result = $conn->query($sql);
-                                            $n = 0;
-                                            $sql2 = "SELECT COUNT(*) AS total_detail FROM tb_detail";
-                                            $result2 = $conn->query($sql2);
-                                            $row2 = mysqli_fetch_assoc($result2);
-                                            $total_detail = $row2['total_detail'];
+                                            $row = mysqli_fetch_assoc($result);
                                             
-                                            if($total_detail > 0){ 
-                                            foreach($result as $row){
-                                                $n++;
-                                                $total_score = $row['total_score'];
                                         ?>
                                         <tbody>
                                             <tr>
-                                                <td class="text-center"><?php echo $n; ?></td>
+                                                <td class="text-center">1</td>
                                                 <td class="text-center"><?php echo $row['fname'].' '.$row['lname']; ?></td>
-                                                <td class="text-center"><?php echo $total_score; ?></td>
+                                                <td class="text-center"><?php echo $row['total']; ?></td>
                                             </tr>
-                                            <?php } ?>
                                         </tbody>
-                                        <?php }else{ ?>
-                                        <tr>
-                                            <td class="text-center text-danger" colspan="3">ไม่มีข้อมูล</td>
-                                        </tr>
-                                        <?php } ?>
                                     </table>
                                 </center>
                             </div>

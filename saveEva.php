@@ -31,6 +31,18 @@
 	$conn->begin_transaction();
 
 	try {
+		$totalScore = 0;
+		foreach ($scores as $idIndicate => $score) {
+			$idIndicate = (int) $idIndicate;
+			$score = (int) $score;
+
+			if ($idIndicate <= 0 || $score < 1 || $score > 5) {
+				throw new Exception('Invalid score data');
+			}
+
+			$totalScore += $score;
+		}
+
 		$deleteDetailStmt = $conn->prepare('DELETE tb_detail FROM tb_detail INNER JOIN tb_eva ON tb_detail.id_eva = tb_eva.id_eva WHERE tb_eva.id_member = ?');
 		if (!$deleteDetailStmt) {
 			throw new Exception($conn->error);
@@ -49,11 +61,11 @@
 			throw new Exception($deleteEvaStmt->error);
 		}
 
-		$evaStmt = $conn->prepare("INSERT INTO tb_eva (id_member, status_eva) VALUES (?, 'y')");
+		$evaStmt = $conn->prepare("INSERT INTO tb_eva (id_member, status_eva, total) VALUES (?, 'y', ?)");
 		if (!$evaStmt) {
 			throw new Exception($conn->error);
 		}
-		$evaStmt->bind_param('i', $member['id_member']);
+		$evaStmt->bind_param('ii', $member['id_member'], $totalScore);
 		if (!$evaStmt->execute()) {
 			throw new Exception($evaStmt->error);
 		}
@@ -67,10 +79,6 @@
 		foreach ($scores as $idIndicate => $score) {
 			$idIndicate = (int) $idIndicate;
 			$score = (int) $score;
-
-			if ($idIndicate <= 0 || $score < 1 || $score > 5) {
-				throw new Exception('Invalid score data');
-			}
 
 			$detailStmt->bind_param('iii', $idEva, $idIndicate, $score);
 			if (!$detailStmt->execute()) {

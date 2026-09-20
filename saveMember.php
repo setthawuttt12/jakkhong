@@ -13,6 +13,13 @@
     $result = $conn->query($sql);
 
     if($result){
+        $id_member = $conn->insert_id;
+
+        if($role == 'ผู้ประเมิน'){
+            $sql2 = "INSERT INTO tb_eva(id_member,status_eva,total) VALUE($id_member,'n',0)";
+            $conn->query($sql2);
+        }
+
         echo"<meta http-equiv='refresh' content='0.5;url=index.php'>";
         
     }else{
