@@ -1,6 +1,6 @@
 <?php
     session_start();
-    if($_SESSION["username"] =="" && $_SESSION["role"==""]){
+    if(empty($_SESSION["username"]) || empty($_SESSION["role"])){
         header("Location:index.php");
         exit();
     }
@@ -25,7 +25,7 @@
   <title>แก้ไขข้อมูลส่วนตัว</title>
 
   <link href="css/bootstrap.min.css" rel="stylesheet">
-<script src="hjs/bootstrap.bundle.min.js"></script></script>
+<script src="js/bootstrap.bundle.min.js"></script>
 
   
 </head>
@@ -40,7 +40,7 @@
                     <div class="card shadow-lg" style="border: none;">
                         <div class="card-header bg-secondary"><h1 class="text-center text-white">แก้ไขข้อมูลส่วนตัว</h1></div>
                         <div class="card-body">
-                            <form action="update.php" class="was-validated" method="post">
+                            <form action="update.php" class="was-validated" method="post" onsubmit="return con()">
                                 <div class="row" style="justify-content: center;">
                                     <div class="col-6 mb-3">
                                         <input type="text" placeholder="ชื่อ" name="fname" id="fname" class="form-control" value="<?php echo $fname; ?>" required>
@@ -68,7 +68,7 @@
                                     <input type="hidden" name="id_member" value="<?php echo $id_member; ?>">
                                     <div class="col-12 mb-3">
                                         <center>
-                                            <button type="submit" class="btn btn-primary text-center text-white" onClick="confirm('ต้องการแก้ไขข้อมูลส่วนตัวใช่หรือไม่')"> อัปเดต</button>
+                                            <button type="submit" class="btn btn-primary text-center text-white"> อัปเดต</button>
                                             <button type="reset" class="btn btn-danger text-center text-white"> ยกเลิก</button>
                                         </center>
                                         
@@ -98,7 +98,10 @@
             );
         });
 
+        function con(){
+            return confirm("ต้องการแก้ไขโปรไฟล์ใช่หรือไม่");
 
+        }
     </script>
 
 </body>
